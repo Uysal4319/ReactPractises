@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     placeImage:{
         width: "100%",
         height:200,
+        borderRadius : 30
     }
 });
 

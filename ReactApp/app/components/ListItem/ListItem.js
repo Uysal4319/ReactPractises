@@ -2,13 +2,26 @@ import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity,Image} from 'react-native';
 
 const listItem = (props) => (
-    <TouchableOpacity onPress =  {props.onItemPressed}>
-    <View style={styles.listItem}>
-        <Image source={props.placeImage} style={styles.placeImage}/>
 
-        <Text>{props.placeName}</Text>
+
+    <View >
+
+        <TouchableOpacity onPress ={props.onItemLongPressed}
+                          onLongPress = {props.onItemPressed} style={styles.listItem}>
+            <View>
+                <TouchableOpacity onPress ={props.onImageScopePressed}  >
+
+                    <Image source={props.placeImage} style={styles.placeImage}/>
+
+                </TouchableOpacity>
+
+            </View>
+
+          <Text>{props.placeName}</Text>
+
+        </TouchableOpacity>
     </View>
-    </TouchableOpacity>
+
 );
 
 const styles = StyleSheet.create({
@@ -18,12 +31,14 @@ const styles = StyleSheet.create({
         padding:10,
         backgroundColor: "#eee",
         flexDirection:"row",
-        alignItems:"center"
+        alignItems:"center",
+        borderRadius: 30
     },
     placeImage:{
         marginRight: 8,
         height:30,
-        width: 30
+        width: 30,
+        borderRadius : 20
     }
 });
 

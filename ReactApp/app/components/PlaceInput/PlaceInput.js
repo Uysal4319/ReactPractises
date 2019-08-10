@@ -22,6 +22,8 @@ class PlaceInput extends Component {
 
     this.props.onPlaceAdded(this.state.placeName);
 
+    this.state.placeName ="";
+
     };
 
 
@@ -31,12 +33,13 @@ class PlaceInput extends Component {
             <View style={styles.inputContainer}>
 
                 <TextInput
-                    style = {{width:300}}
+                    value ={this.state.placeName}
+                    style = {styles.inputStyle}
                     placeholder ="isim giriniz"
                     onChangeText={(placeName) => this.setState({placeName})}
                 />
 
-                <Button title={"Add"}
+                <Button title={"Add Item"}
                         style = {styles.placeButton}
                         onPress={() => this.placeSubmitHandler()}/>
 
@@ -63,11 +66,14 @@ class PlaceInput extends Component {
     }
 }
 const styles = StyleSheet.create({
-    listItem: {
+    inputStyle: {
         width: "100%",
-        padding:10,
-        marginBottom : 5,
-        backgroundColor: "#eee"
+        marginBottom : 20,
+        backgroundColor: "#ECE4E3",
+        borderRadius: 20,
+        borderWidth: 1,
+        fontSize:25,
+        paddingLeft : 150
     },
     container: {
         flex:1,
@@ -86,13 +92,20 @@ const styles = StyleSheet.create({
 
     },
     placeButton: {
-        width : "25%"
+        borderRadius: 30,
+        backgroundColor:"red",
+        marginTop: 30,
+        justifyContent: "center",
+        alignItems :"center",
+        width : "25%",
+        height: 50,
     },
     inputContainer: {
         width: "100%",
         flexDirection: "column",
         justifyContent: "space-between",
-        alignItems: "center"
+        alignItems: "center",
+        marginBottom :20
     }
 });
 

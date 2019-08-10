@@ -11,7 +11,9 @@ const placeList = props => {
             <ListItem
                       placeName={info.item.value}
                       placeImage={info.item.image}
-                      onItemPressed ={() =>props.onItemSelected(info.item.key)}/>
+                      onItemPressed ={() =>props.onItemSelected(info.item.key)}
+                      onItemLongPressed ={() =>props.onLongPressed(info.item.key)}
+                      onImageScopePressed ={() => props.onImageScoped(info.item.key)}/>
         )}/>
 
 
@@ -34,9 +36,6 @@ const styles = StyleSheet.create({
     clickAbleContainer: {
         width: "100%",
         flexDirection: "row",
-    },
-    placeButton: {
-        width: "50%"
     },
     inputContainer: {
         width: "100%",
