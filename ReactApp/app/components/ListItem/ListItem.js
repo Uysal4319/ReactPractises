@@ -6,10 +6,10 @@ const listItem = (props) => (
 
     <View >
 
-        <TouchableOpacity onPress ={props.onItemLongPressed}
-                          onLongPress = {props.onItemPressed} style={styles.listItem}>
+        <TouchableOpacity onLongPress ={props.onItemLongPressed}
+                          onPress = {props.onItemPressed} style={styles.listItem}>
             <View>
-                <TouchableOpacity onPress ={props.onImageScopePressed}  >
+                <TouchableOpacity onPress ={props.onImageScopePressed}>
 
                     <Image source={props.placeImage} style={styles.placeImage}/>
 
@@ -36,8 +36,8 @@ const styles = StyleSheet.create({
     },
     placeImage:{
         marginRight: 8,
-        height:30,
-        width: 30,
+        height:40,
+        width: 40,
         borderRadius : 20
     }
 });

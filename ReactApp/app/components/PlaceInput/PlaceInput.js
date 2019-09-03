@@ -2,47 +2,46 @@ import React, {Component} from 'react';
 import {Text, View, StyleSheet, TextInput, Button} from 'react-native';
 
 class PlaceInput extends Component {
-   state = {
-            placeName : ""
-        };
+    state = {
+        placeName: ""
+    };
+
     componentDidMount() {
 
     }
 
     placeNameChangedHandler = val => {
         this.setState({
-            placeName : val
+            placeName: val
         });
     };
 
-    placeSubmitHandler =()=>{
-        if(this.state.placeName.trim() === ""){
+    placeSubmitHandler = () => {
+        if (this.state.placeName.trim() === "") {
             return;
         }
 
-    this.props.onPlaceAdded(this.state.placeName);
+        this.props.onPlaceAdded(this.state.placeName);
 
-    this.state.placeName ="";
+        this.state.placeName = "";
 
     };
 
 
-
-    render(){
+    render() {
         return (
             <View style={styles.inputContainer}>
 
                 <TextInput
-                    value ={this.state.placeName}
-                    style = {styles.inputStyle}
-                    placeholder ="isim giriniz"
+                    value={this.state.placeName}
+                    style={styles.inputStyle}
+                    placeholder="isim giriniz"
                     onChangeText={(placeName) => this.setState({placeName})}
                 />
 
                 <Button title={"Add Item"}
-                        style = {styles.placeButton}
+                        style={styles.placeButton}
                         onPress={() => this.placeSubmitHandler()}/>
-
 
 
                 {/*<View style={styles.clickAbleContainer}>*/}
@@ -65,39 +64,41 @@ class PlaceInput extends Component {
 
     }
 }
+
 const styles = StyleSheet.create({
     inputStyle: {
         width: "100%",
-        marginBottom : 20,
+        marginBottom: 20,
         backgroundColor: "#ECE4E3",
         borderRadius: 20,
         borderWidth: 1,
-        fontSize:25,
-        paddingLeft : 150
+        fontSize: 25,
+        alignItems: "center",
+        justifyContent: "center",
     },
     container: {
-        flex:1,
+        flex: 1,
         backgroundColor: '#fff',
         justifyContent: 'center'
     },
     submitButton: {
-        width : "50%",
-        backgroundColor :"blue",
-        borderColor:"black",
+        width: "50%",
+        backgroundColor: "blue",
+        borderColor: "black",
         borderWidth: 1
     },
     clickAbleContainer: {
-        width : "100%",
-        flexDirection:"row",
+        width: "100%",
+        flexDirection: "row",
 
     },
     placeButton: {
         borderRadius: 30,
-        backgroundColor:"red",
+        backgroundColor: "red",
         marginTop: 30,
         justifyContent: "center",
-        alignItems :"center",
-        width : "25%",
+        alignItems: "center",
+        width: "25%",
         height: 50,
     },
     inputContainer: {
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "center",
-        marginBottom :20
+        marginBottom: 20
     }
 });
 

@@ -8,12 +8,12 @@ export default class App extends Component {
     state = {
         places: [],
         selectedPlace :null,
-        selectedImage:null
+        selectedImage:null,
+        showName:null
     };
 
 
     placeAddedHandler = placeName => {
-
         this.setState(prevState => {
             return {
                 places: prevState.places.concat({key: Math.floor(Math.random() * 100) + 1,
@@ -57,7 +57,16 @@ export default class App extends Component {
     }
 
     longPressedHandler =key =>{
-        alert(key +" Selected")
+        this.setState(prevState => {
+            return {
+                showName : prevState.places.find( place =>{
+                    return place.key === key;
+                    }
+                )
+            }
+
+        });
+        alert(this.state.showName.value + " Long Pressed");
     }
 
     imageSelectedHandler = key => {
