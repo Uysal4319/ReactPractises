@@ -12,7 +12,7 @@ export default class ListItem extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            checked: null,
+            checked: this.props.article.status,
         };
     }
 
@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
             borderRadius: 20,
             borderColor: 'black',
             backgroundColor: '#09daed',
+            marginBottom : width *3/100
         },
        text: {
            width: width*8/10,
