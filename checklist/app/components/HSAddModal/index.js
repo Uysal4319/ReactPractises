@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {View, Image, Text, Dimensions, TouchableOpacity, StyleSheet} from 'react-native';
 import Modal from "react-native-modal";
-import {HSButton,HSTextInput} from '../../components';
+import {HSButton, HSIndicatorModal, HSTextInput} from '../../components';
 import {colors} from '../../config/constants';
 
 
@@ -13,6 +13,7 @@ export default class HSPauseModal extends Component {
         super(props);
         this.state = {
             item:'',
+            isLoading:false,
         }
 
         this.addItem = this.addItem.bind(this);
@@ -20,9 +21,12 @@ export default class HSPauseModal extends Component {
     }
 
     async addItem(){
-        this.onStart();
-        if(this.state.item !== null){
-            return fetch('https://spring-eu.herokuapp.com/addItem', {
+
+        this.setState({
+            isLoading: true,
+        });
+        try {
+            let response = await fetch('https://spring-eu.herokuapp.com/addItem',{
                 method: 'POST',
                 headers: {
                     Accept: 'text/plain',
@@ -31,11 +35,44 @@ export default class HSPauseModal extends Component {
                 body:  this.state.item,
             });
 
+            this.setState({
+                isLoading: false,
+            });
+        } catch (error) {
+            console.error(error);
+
+            alert('Internetiniz açık olmalı. Açık olduğundan emin olun tekrar girin');
         }
+
+        this.onStart();
+
+
+        // if(this.state.item !== null){
+        //     return fetch('https://spring-eu.herokuapp.com/addItem', {
+        //         method: 'POST',
+        //         headers: {
+        //             Accept: 'text/plain',
+        //             'Content-Type': 'text/plain',
+        //         },
+        //         body:  this.state.item,
+        //     });
+        //
+        // }
 
     }
 
     render() {
+
+        if (this.state.isLoading) {
+            return (
+                // <View style={{flex: 1, padding: 20}}>
+                //     <ActivityIndicator/>
+                // </View>
+
+                <HSIndicatorModal display= {this.state.isLoading} />
+            );
+        }
+
         return (
             <Modal
                 animationIn={'zoomInDown'}

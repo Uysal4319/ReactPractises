@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {ActivityIndicator, Dimensions, FlatList, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 
-import {HSButton,HSPauseModal,HSTextInput,ListItem} from '../../components';
+import {HSButton,HSAddModal,ListItem,HSDeleteModal,HSIndicatorModal} from '../../components';
 import {colors} from '../../config/constants';
 
 import {isLogin} from '../../common/index';
@@ -17,7 +17,10 @@ export default class ListScreen extends Component {
             checkList: null,
             isConnected: true,
             modalVisible :false,
+            deleteVisible :false,
+            indicatorVisible :false,
             addedText:'',
+            item:null
         };
         this._interval = null;
         this.getItems();
@@ -25,6 +28,8 @@ export default class ListScreen extends Component {
         this.onStart = this.onStart.bind(this);
         this.handleModal = this.handleModal.bind(this);
         this.getItems = this.getItems.bind(this);
+        this.onCancel = this.onCancel.bind(this);
+        this.onDeleteItem = this.onDeleteItem.bind(this);
 
     }
 
@@ -67,14 +72,45 @@ export default class ListScreen extends Component {
     }
 
     async updateItems() {
-        return fetch('https://spring-eu.herokuapp.com/updateItems', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify( this.state.checkList ),
+
+        this.setState({
+            isLoading: true,
         });
+
+        try {
+            let response = await fetch('https://spring-eu.herokuapp.com/updateItems',{
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify( this.state.checkList ),
+            });
+
+            this.setState({
+                isLoading: false,
+            });
+
+        } catch (error) {
+            console.error(error);
+
+            this.setState({
+                isLoading: false,
+            });
+
+            alert('Internetiniz açık olmalı. Açık olduğundan emin olun tekrar girin');
+        }
+
+        // return fetch('https://spring-eu.herokuapp.com/updateItems', {
+        //     method: 'POST',
+        //     headers: {
+        //         Accept: 'application/json',
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify( this.state.checkList ),
+        // });
+
+
 
     }
     componentWillMount() {
@@ -83,6 +119,7 @@ export default class ListScreen extends Component {
      onStart(){
         this.setState({
             modalVisible:false,
+            isLoading:true,
         });
         console.debug("kelime eklendi");
         this.getItems();
@@ -93,13 +130,40 @@ export default class ListScreen extends Component {
         })
     }
 
+    onLongPressed (item) {
+        console.debug(item.id);
+        this.setState({
+            deleteVisible:true,
+            item: item
+        })
+    }
+
+    onDeleteItem(){
+
+        this.setState({
+            deleteVisible:false,
+            isLoading:true,
+        });
+
+        this.getItems();
+
+    }
+
+    onCancel(){
+        this.setState({
+            deleteVisible:false,
+            modalVisible:false,
+        });
+    }
     render() {
 
         if (this.state.isLoading) {
             return (
-                <View style={{flex: 1, padding: 20}}>
-                    <ActivityIndicator/>
-                </View>
+                // <View style={{flex: 1, padding: 20}}>
+                //     <ActivityIndicator/>
+                // </View>
+
+                <HSIndicatorModal display= {this.state.isLoading} />
             );
         }
         return (
@@ -115,11 +179,15 @@ export default class ListScreen extends Component {
                 <View style={styles.list}>
                     <FlatList
                         data={this.state.checkList}
-                        renderItem={({item}) => <ListItem article={item}/>}
+                        renderItem={({item}) => <ListItem article={item}
+                                                          onItemLongPressed ={() =>this.onLongPressed(item)}/>}
                         keyExtractor={item => item.id}
                     />
 
-                    <HSPauseModal display={this.state.modalVisible} onStart={this.onStart} />
+                    <HSAddModal display={this.state.modalVisible} onStart={this.onStart} onCancel = {this.onCancel} />
+
+
+                    <HSDeleteModal display={this.state.deleteVisible} onDelete={this.onDeleteItem} onCancel = {this.onCancel} item = {this.state.item}/>
 
                 </View>
 

@@ -1,7 +1,9 @@
 
 import HSButton from './HSButton';
-import HSPauseModal from './HSPauseModal';
+import HSAddModal from './HSAddModal';
+import HSDeleteModal from './HSDeleteModal';
 import HSTextInput from './HSTextInput';
 import ListItem from './ListItem';
+import HSIndicatorModal from './HSIndicatorModal';
 
-export {  HSButton,HSPauseModal,HSTextInput,ListItem }
+export {HSIndicatorModal,HSDeleteModal , HSButton,HSAddModal,HSTextInput,ListItem }

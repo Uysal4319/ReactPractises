@@ -26,20 +26,25 @@ export default class ListItem extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <View style = {styles.text}>
-                    <Text>
-                        {this.props.article.text}
-                    </Text>
-                </View>
-                <View style = {styles.checkbox}>
-                    <CheckBox
-                        value={this.state.checked}
-                        onValueChange={() => this.setState({ checked: !this.state.checked })}
-                    />
+            <TouchableOpacity onLongPress ={this.props.onItemLongPressed}>
+
+                <View style={styles.container}>
+                    <View style = {styles.text}>
+                        <Text>
+                            {this.props.article.text}
+                        </Text>
+                    </View>
+                    <View style = {styles.checkbox}>
+                        <CheckBox
+                            value={this.state.checked}
+                            onValueChange={() => this.setState({ checked: !this.state.checked })}
+                        />
+                    </View>
+
                 </View>
 
-            </View>
+            </TouchableOpacity>
+
 
         );
     }
