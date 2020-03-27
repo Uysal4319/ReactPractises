@@ -8,6 +8,7 @@ import {createStackNavigator} from 'react-navigation-stack';
 import ListScreen from '../screens/ListScreen';
 import LoginPage from '../screens/LoginPage';
 import MyLoveScreen from '../screens/MyLoveScreen';
+import {createNavigationReducer, createReactNavigationReduxMiddleware} from 'react-navigation-redux-helpers';
 
 
 const AppNavigator = createStackNavigator(
@@ -17,11 +18,17 @@ const AppNavigator = createStackNavigator(
     MyLove: MyLoveScreen,
   },
   {
-    initialRouteName: 'List',
+    initialRouteName: 'Login',
     defaultNavigationOptions: {
       header: null,
     },
   },
+);
+
+export const routerReducer = createNavigationReducer(AppNavigator);
+
+export const routerMiddleware = createReactNavigationReduxMiddleware(
+    state => state.nav
 );
 
 export default createAppContainer(AppNavigator);

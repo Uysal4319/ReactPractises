@@ -3,11 +3,13 @@ import {View, Image, Text, Dimensions, TouchableOpacity, StyleSheet} from 'react
 import Modal from "react-native-modal";
 import {HSButton, HSIndicatorModal, HSTextInput} from '../../components';
 import {colors} from '../../config/constants';
+import {connect} from 'react-redux';
 
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 
+@connect(({ app, router }) => ({ app, router }))
 export default class HSDeleteModal extends Component {
     constructor(props) {
         super(props);
@@ -23,6 +25,7 @@ export default class HSDeleteModal extends Component {
     }
 
     async deleteItem(){
+        const  {token}  = this.props.app;
         console.debug("item "+ this.props.item.text);
 
 
@@ -36,11 +39,13 @@ export default class HSDeleteModal extends Component {
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
+                    Authorization:'Bearer '+ token
                 },
                 body:  JSON.stringify({
                         id: this.props.item.id,
                         text: this.props.item.text,
-                        status: this.props.item.status
+                        status: this.props.item.status,
+                        username: token
                     }
                 )
             });

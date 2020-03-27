@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import {View, Text, Dimensions, TouchableOpacity, ActivityIndicator} from 'react-native';
 import Modal from "react-native-modal";
+import {connect} from 'react-redux';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 
-export default class HSPauseModal extends Component {
+export default class HSLoadingModal extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
         }
     }

@@ -5,9 +5,12 @@ import {HSButton,HSAddModal,ListItem,HSDeleteModal,HSIndicatorModal} from '../..
 import {colors} from '../../config/constants';
 
 import {isLogin} from '../../common/index';
+import {connect} from 'react-redux';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
+
+@connect(({ app, router }) => ({ app, router }))
 export default class ListScreen extends Component {
     constructor(props) {
         super(props);
@@ -30,6 +33,8 @@ export default class ListScreen extends Component {
         this.getItems = this.getItems.bind(this);
         this.onCancel = this.onCancel.bind(this);
         this.onDeleteItem = this.onDeleteItem.bind(this);
+
+
 
     }
 
@@ -54,9 +59,18 @@ export default class ListScreen extends Component {
 
 
     async getItems() {
-        console.debug("get Items çağrıldı");
+        const  {token}  = this.props.app;
+        console.debug("get Items çağrıldı token "+token);
         try {
-            let response = await fetch('https://spring-eu.herokuapp.com/findAllItem');
+            let response = await fetch('https://spring-eu.herokuapp.com/findAllItem',{
+                method: 'POST',
+                    headers: {
+                    Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    Authorization:'Bearer '+ token
+                },
+                body: token
+            });
             let responseJson = await response.json();
 
             this.setState({
@@ -73,6 +87,8 @@ export default class ListScreen extends Component {
 
     async updateItems() {
 
+        const  {token}  = this.props.app;
+
         this.setState({
             isLoading: true,
         });
@@ -83,6 +99,7 @@ export default class ListScreen extends Component {
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
+                    Authorization:'Bearer '+ token
                 },
                 body: JSON.stringify( this.state.checkList ),
             });

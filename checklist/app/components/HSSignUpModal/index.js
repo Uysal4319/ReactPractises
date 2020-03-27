@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, Image, Text, Dimensions, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Image, Text, Dimensions, TouchableOpacity, StyleSheet, Alert} from 'react-native';
 import Modal from "react-native-modal";
 import {HSButton, HSIndicatorModal, HSTextInput} from '../../components';
 import {colors} from '../../config/constants';
@@ -10,48 +10,61 @@ const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 
 @connect(({ app, router }) => ({ app, router }))
-export default class HSPauseModal extends Component {
+export default class HSSignUpModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            item:'',
+            username:'',
+            password:'',
             isLoading:false,
         };
 
-        this.addItem = this.addItem.bind(this);
-        this.onStart = this.props.onStart.bind(this);
+        this.addUser = this.addUser.bind(this);
+        this.onCancel = this.props.onCancel.bind(this);
     }
 
-    async addItem(){
-        const  {token}  = this.props.app;
-
-        const tokenBody= this.state.item+'&&'+token;
-        console.debug("Add Itim log token " + tokenBody);
+    async addUser(){
 
         this.setState({
             isLoading: true,
         });
+
         try {
-            let response = await fetch('https://spring-eu.herokuapp.com/addItem',{
+            let response = await fetch('https://spring-eu.herokuapp.com/sign-up',{
                 method: 'POST',
                 headers: {
-                    Accept: 'text/plain',
-                    'Content-Type': 'text/plain',
-                    Authorization:'Bearer '+ token
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
                 },
-                body:  tokenBody
+                body: JSON.stringify({
+                    username:this.state.username,
+                    password:this.state.password
+
+                })
             });
+
+
+            console.log("response ==>"+ response.status);
+
+            if(response.status === 201){
+
+                Alert.alert('Kullanıcı Zaten var');
+            }
 
             this.setState({
                 isLoading: false,
             });
+
         } catch (error) {
             console.error(error);
+            this.setState({
+                isLoading: false,
+            });
 
             alert('Internetiniz açık olmalı. Açık olduğundan emin olun tekrar girin');
         }
 
-        this.onStart();
+        this.onCancel();
 
 
         // if(this.state.item !== null){
@@ -94,9 +107,21 @@ export default class HSPauseModal extends Component {
                     <HSTextInput
                         width={'90%'}
                         height={'12%'}
-                        placeholder="Item gir"
+                        placeholder="Username"
                         onChangeText={text => this.setState({
-                            item:text
+                            username:text
+                        })}
+                        placeholderTextColor="white"
+                        backgroundColor="blue"
+                        color="white"
+                    />
+
+                    <HSTextInput
+                        width={'90%'}
+                        height={'12%'}
+                        placeholder="Password"
+                        onChangeText={text => this.setState({
+                            password:text
                         })}
                         placeholderTextColor="white"
                         backgroundColor="blue"
@@ -109,11 +134,11 @@ export default class HSPauseModal extends Component {
                         height={'10%'}
                         backgroundColor={colors.uglyBlue}
                         style={styles.button}
-                        onPress={this.addItem}
+                        onPress={this.addUser}
                     />
 
                     <HSButton
-                        title="iptal"
+                        title="İptal"
                         width={'50%'}
                         height={'10%'}
                         backgroundColor={colors.uglyBlue}
