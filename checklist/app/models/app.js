@@ -2,6 +2,7 @@ export default {
     namespace: 'app',
     state: {
         token:'token',
+        userid:'userid',
     },
     reducers: {
         updateState(state, { payload }) {

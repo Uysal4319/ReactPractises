@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 
 import {HSSignUpModal, HSIndicatorModal, HSButton} from '../../components';
 import {colors} from '../../config/constants';
+import OneSignal from 'react-native-onesignal';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -28,8 +29,18 @@ export default class LoginPage extends PureComponent {
         };
 
         const token = this.props.app;
-        this.onCancel = this.onCancel.bind(this)
-        this.onAddUser = this.onAddUser.bind(this)
+        this.onCancel = this.onCancel.bind(this);
+        this.onAddUser = this.onAddUser.bind(this);
+        OneSignal.addEventListener('ids', this.onIds);
+    }
+
+
+    onIds(device) {
+
+
+        console.log('Device info ===>> ', device);
+
+        this.props.dispatch({type: 'app/updateState', payload: {userid: device.userid.toString()}});
     }
 
 
@@ -37,6 +48,8 @@ export default class LoginPage extends PureComponent {
         let name = this.state.userName;
         let pass = this.state.userPassword;
         let present = this;
+
+
         this.setState({
             isLoading: true,
         });
